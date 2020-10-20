@@ -3,16 +3,16 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 
+import server.configuration.Configuration;
 import server.error.InvalidConfigurationException;
 
 public class Main {
 
 	public static void main(String[] args) {
-		if(args.length != 3) {
+		if (args.length != 3) {
 			System.out.print("Usage java Main rootDirectoryPath maintenancePagePath portNumber");
 			System.exit(-1);
-		}
-		else {
+		} else {
 			ServerSocket serverSocket = null;
 			String rootDirectoryPath = args[0];
 			String maintenancePagePath = args[1];
@@ -21,11 +21,11 @@ public class Main {
 				serverSocket = new ServerSocket(port);
 				System.out.println("Server started...");
 				Configuration config = new Configuration(rootDirectoryPath, maintenancePagePath, port);
-				while(true) {
+				while (true) {
 					System.out.println("Waiting for connections...");
 					new MyServer(serverSocket.accept(), config);
 				}
-				
+
 			} catch (IOException | InvalidConfigurationException e) {
 				System.out.println("Error: " + e);
 			} finally {

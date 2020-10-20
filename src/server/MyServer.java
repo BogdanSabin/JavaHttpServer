@@ -3,19 +3,20 @@ package server;
 import java.io.IOException;
 import java.net.Socket;
 
+import server.configuration.Configuration;
 import server.error.InvalidConfigurationException;
 
 public class MyServer extends Thread{
 	protected Socket clientSocket;
-	private ServerState state = ServerState.STOPPED; //default state
-	private Configuration config;
+	private static ServerState state = ServerState.STOPPED; //default state
+	private static Configuration config;
 	
 	public MyServer(Socket socket, Configuration config) throws InvalidConfigurationException {
 		if(config == null || socket == null)
 			throw new InvalidConfigurationException("Server has not been configured!");
 		this.clientSocket = socket;
-		this.config = config;
-		this.state = ServerState.RUNNING;
+		MyServer.config = config;
+		MyServer.state = ServerState.RUNNING;
 		this.start();
 	}
 	
@@ -28,22 +29,22 @@ public class MyServer extends Thread{
 		}
 	}
 	
-	public ServerState getServerState() {
-		return state;
+	public static ServerState getServerState() {
+		return MyServer.state;
 	}
 	
-	public void setState(ServerState state) {
-		this.state = state;
+	public static void setState(ServerState state) {
+		MyServer.state = state;
 	}
 	
-	public Configuration getConfig() {
-		return config;
+	public static Configuration getConfig() {
+		return MyServer.config;
 	}
 	
-	public void setConfig(Configuration config) throws InvalidConfigurationException {
+	public static void  setConfig(Configuration config) throws InvalidConfigurationException {
 		if(config == null)
 			throw new InvalidConfigurationException("Server has not been configured!");
-		this.config = config;
+		MyServer.config = config;
 	}
 				
 	
