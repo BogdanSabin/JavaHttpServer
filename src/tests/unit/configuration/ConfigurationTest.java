@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import server.configuration.Configuration;
-import server.error.InvalidConfigurationException;
+import server.errors.InvalidConfigurationException;
 
 public class ConfigurationTest {
 

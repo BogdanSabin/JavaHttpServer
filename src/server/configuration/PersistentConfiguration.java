@@ -8,7 +8,7 @@ import java.io.Reader;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
 
-import server.error.InvalidConfigurationException;
+import server.errors.InvalidConfigurationException;
 import server.validators.PathValidator;
 
 // I use JSON-simple-1.1 library for input/output operations

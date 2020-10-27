@@ -1,4 +1,4 @@
-package server.error;
+package server.errors;
 
 @SuppressWarnings("serial")
 public class InvalidConfigurationException extends Exception {

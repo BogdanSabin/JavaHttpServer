@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 
 import server.configuration.Configuration;
-import server.error.InvalidConfigurationException;
+import server.errors.InvalidConfigurationException;
 
 public class Main {
 

@@ -1,6 +1,6 @@
 package server.configuration;
 
-import server.error.InvalidConfigurationException;
+import server.errors.InvalidConfigurationException;
 import server.validators.PathValidator;
 import server.validators.PortValidator;
 

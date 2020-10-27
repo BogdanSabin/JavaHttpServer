@@ -14,7 +14,7 @@ import org.junit.Test;
 import server.MyServer;
 import server.ServerState;
 import server.configuration.Configuration;
-import server.error.InvalidConfigurationException;
+import server.errors.InvalidConfigurationException;
 
 public class MyServerTest {
 	private Configuration config;

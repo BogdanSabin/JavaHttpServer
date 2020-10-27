@@ -8,7 +8,7 @@ import java.io.IOException;
 import org.junit.Test;
 
 import server.configuration.PersistentConfiguration;
-import server.error.InvalidConfigurationException;
+import server.errors.InvalidConfigurationException;
 
 public class PersistentConfigurationTest {
 	private final String pathToStorageDesktop = System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "storage.json";
