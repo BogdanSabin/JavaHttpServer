@@ -14,6 +14,7 @@ import server.errors.InvalidConfigurationException;
 import server.errors.InvalidRequestException;
 import server.httpHandlers.GetHandler;
 import server.httpHandlers.Handler;
+import server.httpHandlers.NotFoundHandler;
 import server.parsers.HttpParser;
 
 public class MyServer extends Thread {
@@ -46,6 +47,7 @@ public class MyServer extends Thread {
 				Map<String, String> request = HttpParser.parseRequest(in, MyServer.supportedMethods);
 				
 				String filePath = this.composePath(request.get("fileRequested"), false);
+				if(filePath.endsWith("404.html")) request.put("method", "NOTFOUND");
 				int fileLenght = (int) new File(filePath).length();
 				Handler responseHandler = null;
 
@@ -56,6 +58,10 @@ public class MyServer extends Thread {
 					break;
 				case "GET":
 					responseHandler = new GetHandler();
+					responseHandler.handleRequest(out, dataOut, filePath, fileLenght);
+					break;
+				case "NOTFOUND":
+					responseHandler = new NotFoundHandler();
 					responseHandler.handleRequest(out, dataOut, filePath, fileLenght);
 					break;
 
@@ -110,6 +116,9 @@ public class MyServer extends Thread {
 		
 		if(file.length() == 1 && file.endsWith("/"))
 			file = "index.html";
-		return new File(basePath, file).getPath();
+		File page = new File(basePath, file);
+		if(!page.exists())
+			return new File(basePath, "404.html").getPath();
+		return page.getPath();
 	}
 }

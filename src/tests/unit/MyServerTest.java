@@ -47,7 +47,7 @@ public class MyServerTest {
 			e1.printStackTrace();
 		}
 	}
-	
+
 	@Test(timeout = 5000)
 	public void testMyServerInstantiationWithCorrectParameters() {
 		try {
@@ -63,6 +63,47 @@ public class MyServerTest {
 	public void testMyServerInstantiationWithNullParameters() throws InvalidConfigurationException {
 		MyServer server = new MyServer(null, null);
 		assertNull("should be null", server);
+	}
+
+	@Test(expected = InvalidConfigurationException.class)
+	public void testMyServerSetConfigWithInvalidConfig() throws InvalidConfigurationException {
+		MyServer.setConfig(null);
+	}
+
+	@Test
+	public void testMyServerSetAndGetConfigWithValidConfig() {
+		try {
+			MyServer.setConfig(this.config);
+			assertTrue("should be equal", MyServer.getConfig().equals(this.config));
+		} catch (InvalidConfigurationException e) {
+			// TODO Auto-generated catch block
+			fail("Should not fail with good parameters");
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testMyServerGetConfigWithModifiedConfig() {
+		try {
+			MyServer.setConfig(this.config);
+			Configuration temp = new Configuration("C:\\Users", "C:\\Users", 8032);
+			assertFalse("should be equal", MyServer.getConfig().equals(temp));
+		} catch (InvalidConfigurationException e) {
+			// TODO Auto-generated catch block
+			fail("Should not fail with good parameters");
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testMyServerStateIsStoppedBeforeInstanciation() {
+		assertTrue("Should be equal", MyServer.getServerState() == ServerState.STOPPED);
+	}
+
+	@Test
+	public void testMyServerSetState() {
+		MyServer.setState(ServerState.MAINTENANCE);
+		assertTrue("Should be equal", MyServer.getServerState() == ServerState.MAINTENANCE);
 	}
 
 	@Test(timeout = 5000)
