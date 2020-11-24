@@ -1,38 +1,36 @@
 package server.httpHandlers;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Date;
+
+import server.errors.InvalidParameterException;
 
 public abstract class Handler {
 	// template method
-	public final void handleRequest(PrintWriter out, BufferedOutputStream dataOut, String fileRequested,
-			int fileLength) throws IOException {
+	public final String handleRequest(String fileRequested, int fileLength) {
 		String content = getContentType(fileRequested);
-		out = this.addHeders(out);
-		out.println("Server: Java HTTP Server : 1.0");
-		out.println("Date: " + new Date());
-		out.println("Content-type: " + content);
-		out.println("Content-length: " + fileLength);
-		out.println(); // blank line between headers and content, very important !
-		out.flush(); // flush character output stream buffer
-		
-		byte[] fileData = readFileData(new File(fileRequested), fileLength);
-		dataOut.write(fileData, 0, fileLength);
-		dataOut.flush();
+		StringBuilder headers = new StringBuilder();
+
+		headers.append(this.addHeders());
+		headers.append("Server: Java HTTP Server : 1.0\n");
+		headers.append("Date: " + new Date() + "\n");
+		headers.append("Content-type: " + content + "\n");
+		headers.append("Content-length: " + fileLength + "\n");
+		headers.append("\n"); // blank line between headers and content, very important !
+
+		return headers.toString();
 	}
 
-	private String getContentType(String fileRequested) {
-		if (fileRequested.endsWith(".htm") || fileRequested.endsWith(".html"))
-			return "text/html";
-		else
-			return "text/plain";
-	}
+	public static final byte[] getFileBytes(File file, int fileLength) throws IOException, InvalidParameterException {
+		if (file == null)
+			throw new InvalidParameterException("File must not be null");
+		if (!file.exists())
+			throw new InvalidParameterException("File must exists null");
+		if (fileLength <= 0)
+			throw new InvalidParameterException("lenght mush be positive");
 
-	private byte[] readFileData(File file, int fileLength) throws IOException {
 		FileInputStream fileIn = null;
 		byte[] fileData = new byte[fileLength];
 
@@ -47,5 +45,12 @@ public abstract class Handler {
 		return fileData;
 	}
 
-	abstract PrintWriter addHeders(PrintWriter out);
+	private String getContentType(String fileRequested) {
+		if (fileRequested.endsWith(".htm") || fileRequested.endsWith(".html"))
+			return "text/html";
+		else
+			return "text/plain";
+	}
+
+	abstract String addHeders();
 }

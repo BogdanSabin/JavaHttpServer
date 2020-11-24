@@ -9,6 +9,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
 
 import server.errors.InvalidConfigurationException;
+import server.errors.InvalidParameterException;
 import server.validators.PathValidator;
 
 // I use JSON-simple-1.1 library for input/output operations
@@ -33,18 +34,22 @@ public class PersistentConfiguration {
 		this.configPath = configPath;
 	}
 
-	public void setKey(String key, String value) {
+	public void setKey(String key, String value) throws InvalidParameterException {
+		if(key == null || value == null) throw new InvalidParameterException("The parameters must not be null");
 		this.saveIntoStorage(key, value);
 	}
 
-	public String getValue(String key) {
+	public String getValue(String key) throws InvalidParameterException {
+		if(key == null) throw new InvalidParameterException("The parameter key must not be null");
 		JSONObject obj = this.readFromStorage();
 		JSONObject config = (JSONObject) obj.get("config");
-		return (String) config.get(key);
+		String value  = (String) config.get(key);
+		if(value == null) throw new InvalidParameterException("The key is not present in confg");
+		return value; 
 	}
 
 	public String getConfigPath() {
-		return configPath;
+		return this.configPath;
 	}
 
 	@SuppressWarnings("unchecked")

@@ -14,8 +14,9 @@ public class HttpParser {
 	public static Map<String, String> parseRequest(BufferedReader request, String[] supportedMethods) throws InvalidRequestException {
 		HashMap<String, String> response = new HashMap<String, String>();
 		try {
+			if(request == null) throw new InvalidRequestException("request is null");
 			String input = request.readLine();
-			StringTokenizer parse = new StringTokenizer(input); // split the request by
+			StringTokenizer parse = new StringTokenizer(input); // split the request by " \t\n\r\f"
 			String method = parse.nextToken().toUpperCase();
 			if(Arrays.asList(supportedMethods).contains(method)) {
 				response.put("method", method);

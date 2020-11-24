@@ -60,4 +60,12 @@ public class Configuration {
 		return PortValidator.isValidPort(port);
 	}
 
+	@Override
+	public boolean equals(Object c) {
+		if ((c instanceof Configuration) && ((Configuration) c).getPort() == this.port
+				&& ((Configuration) c).getMaintenancePage().equals(this.maintenancePage)
+				&& ((Configuration) c).getRootDirectory().equals(this.rootDirectory))
+			return true;
+		return false;
+	}
 }

@@ -11,6 +11,7 @@ import java.util.Map;
 
 import server.configuration.Configuration;
 import server.errors.InvalidConfigurationException;
+import server.errors.InvalidParameterException;
 import server.errors.InvalidRequestException;
 import server.httpHandlers.GetHandler;
 import server.httpHandlers.Handler;
@@ -45,24 +46,25 @@ public class MyServer extends Thread {
 				System.out.println("Maintenance");
 			else {
 				Map<String, String> request = HttpParser.parseRequest(in, MyServer.supportedMethods);
-				
+
 				String filePath = this.composePath(request.get("fileRequested"), false);
-				if(filePath.endsWith("404.html")) request.put("method", "NOTFOUND");
+				if (filePath.endsWith("404.html"))
+					request.put("method", "NOTFOUND");
 				int fileLenght = (int) new File(filePath).length();
 				Handler responseHandler = null;
 
 				switch (request.get("method")) {
 				case "HEAD":
 					responseHandler = new GetHandler();
-					responseHandler.handleRequest(out, dataOut, filePath, fileLenght);
+					this.handleRequest(responseHandler, out, dataOut, filePath, fileLenght);
 					break;
 				case "GET":
 					responseHandler = new GetHandler();
-					responseHandler.handleRequest(out, dataOut, filePath, fileLenght);
+					this.handleRequest(responseHandler, out, dataOut, filePath, fileLenght);
 					break;
 				case "NOTFOUND":
 					responseHandler = new NotFoundHandler();
-					responseHandler.handleRequest(out, dataOut, filePath, fileLenght);
+					this.handleRequest(responseHandler, out, dataOut, filePath, fileLenght);
 					break;
 
 				default:
@@ -70,7 +72,7 @@ public class MyServer extends Thread {
 				}
 			}
 
-		} catch (IOException | InvalidRequestException e) {
+		} catch (IOException | InvalidRequestException | InvalidParameterException e) {
 			System.out.println("Error in run method: " + e);
 		} finally {
 			try {
@@ -107,17 +109,30 @@ public class MyServer extends Thread {
 		MyServer.config = config;
 	}
 
+	private void handleRequest(Handler handler, PrintWriter out, BufferedOutputStream dataOut, String fileRequested,
+			int fileLength) throws IOException, InvalidParameterException {
+		// add headers
+		String headers = handler.handleRequest(fileRequested, fileLength);
+		out.print(headers);
+		out.flush(); // flush character output stream buffer
+
+		// add requested data
+		byte[] fileData = Handler.getFileBytes(new File(fileRequested), fileLength);
+		dataOut.write(fileData, 0, fileLength);
+		dataOut.flush();
+	}
+
 	private String composePath(String file, Boolean isMaintenance) {
 		String basePath;
 		if (isMaintenance)
 			basePath = MyServer.config.getMaintenancePage();
 		else
 			basePath = MyServer.config.getRootDirectory();
-		
-		if(file.length() == 1 && file.endsWith("/"))
+
+		if (file.length() == 1 && file.endsWith("/"))
 			file = "index.html";
 		File page = new File(basePath, file);
-		if(!page.exists())
+		if (!page.exists())
 			return new File(basePath, "404.html").getPath();
 		return page.getPath();
 	}
