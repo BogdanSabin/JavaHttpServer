@@ -68,4 +68,10 @@ public class Configuration {
 			return true;
 		return false;
 	}
+	
+	//Bug: server.configuration.Configuration defines equals and uses Object.hashCode()
+	public int hashCode() {
+		  assert false : "hashCode not designed";
+		  return 42; // any arbitrary constant will do
+		}
 }

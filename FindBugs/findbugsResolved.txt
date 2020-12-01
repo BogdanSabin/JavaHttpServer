@@ -1,0 +1,18 @@
+1. 
+Bug: server.configuration.Configuration defines equals and uses Object.hashCode()
+Solution: Add the recommended implementation for hasCode
+
+2. 
+Bug: -serverSocket is null guaranteed to be dereferenced in server.Main.main(String[]) on exception path
+     -dataOut is null guaranteed to be dereferenced in server.MyServer.run() on exception path
+     -in is null guaranteed to be dereferenced in server.MyServer.run() on exception path
+     -out is null guaranteed to be dereferenced in server.MyServer.run() on exception path [Troubling(11), Normal confidence]
+Solution: Add check for null before closing data streams
+
+3.
+Bug: Dereference of the result of readLine() without nullcheck in server.parsers.HttpParser.parseRequest(BufferedReader, String[])
+Solution: Add null check
+
+4.
+Bug: Write to static field server.MyServer.config from instance method new server.MyServer(Socket, Configuration)
+Solution: Use the static setter method for config

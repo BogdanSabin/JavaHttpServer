@@ -28,7 +28,7 @@ public class MyServer extends Thread {
 		if (config == null || socket == null)
 			throw new InvalidConfigurationException("Server has not been configured!");
 		this.clientSocket = socket;
-		MyServer.config = config;
+		MyServer.setConfig(config);
 		MyServer.state = ServerState.RUNNING;
 		this.start();
 	}
@@ -76,9 +76,9 @@ public class MyServer extends Thread {
 			System.out.println("Error in run method: " + e);
 		} finally {
 			try {
-				in.close();
-				out.close();
-				dataOut.close();
+				if (in != null) in.close();
+				if (out != null) out.close();
+				if (dataOut != null) dataOut.close();
 				this.clientSocket.close();
 			} catch (IOException e) {
 				System.out.println("Error at socket close " + e);

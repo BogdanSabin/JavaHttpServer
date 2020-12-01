@@ -16,6 +16,7 @@ public class HttpParser {
 		try {
 			if(request == null) throw new InvalidRequestException("request is null");
 			String input = request.readLine();
+			if(input == null) throw new InvalidRequestException("input is null");
 			StringTokenizer parse = new StringTokenizer(input); // split the request by " \t\n\r\f"
 			String method = parse.nextToken().toUpperCase();
 			if(Arrays.asList(supportedMethods).contains(method)) {

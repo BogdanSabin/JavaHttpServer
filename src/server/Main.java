@@ -30,7 +30,8 @@ public class Main {
 				System.out.println("Error: " + e);
 			} finally {
 				try {
-					serverSocket.close();
+					if (serverSocket != null)
+						serverSocket.close();
 				} catch (IOException e) {
 					System.out.println("Error " + e);
 					System.exit(-1);
