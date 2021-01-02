@@ -10,7 +10,7 @@ public class CreateFrame extends JFrame {
 
 	private final String name = "MyHttpServer";
 	private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	private static final Dimension frameSize = new Dimension(650, 400);
+	private static final Dimension frameSize = new Dimension(600, 390);
 
 	public CreateFrame() {
 		this.drawFrame();

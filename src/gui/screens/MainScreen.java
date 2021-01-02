@@ -1,33 +1,41 @@
 package gui.screens;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.text.NumberFormat;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
-import javax.swing.JFormattedTextField;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import gui.helpers.CreateFrame;
+import gui.helpers.JDataInfo;
 import gui.helpers.JFilePicker;
-import gui.helpers.JTextFieldLimit;
+
 import server.MyServer;
 import server.ServerState;
 
@@ -39,14 +47,14 @@ public class MainScreen {
 	private final Border compoundBorder = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
 	private final Font textFont = new Font("Verdana", 0, 12);
 	private final Font borderFont = new Font("Verdana", Font.PLAIN, 9);
-	private JLabel serverStatus;
-	private JLabel serverAddress;
-	private JLabel serverPort;
+	private JDataInfo serverStatus;
+	private JDataInfo serverAddress;
+	private JDataInfo serverPort;
 	private JCheckBox goMaintenance;
-	private JFormattedTextField textFieldPort;
+	private JTextField textFieldPort;
 	private JFilePicker textFieldRootDirectory;
 	private JFilePicker textFieldMaintenanceDirectory;
-	private  InetAddress myIP;
+	private InetAddress myIP;
 
 //	private Configuration config;
 //	@SuppressWarnings("unused")
@@ -74,17 +82,32 @@ public class MainScreen {
 		JPanel centralPanel = new JPanel();
 		ImageIcon start = createImageIcon("../assets/start.png");
 		ImageIcon stop = createImageIcon("../assets/stop.png");
-		myIP=InetAddress.getLocalHost();
-		
-		this.serverStatus = this.createStaticLabel("not running", this.textFont);
-		this.serverAddress = this.createStaticLabel("not running", this.textFont);
-		this.serverPort = this.createStaticLabel("not running", this.textFont);
+		myIP = InetAddress.getLocalHost();
 
-		NumberFormat integerFieldFormatter = NumberFormat.getIntegerInstance();
-		integerFieldFormatter.setGroupingUsed(false);
-		textFieldPort = new JFormattedTextField(integerFieldFormatter);
-		textFieldPort.setColumns(5);
-		textFieldPort.setDocument(new JTextFieldLimit(5));
+		this.serverStatus = new JDataInfo("Server status: ", "not running", this.textFont, Color.RED);
+		this.serverAddress = new JDataInfo("Server address: ", "not running", this.textFont, Color.blue);
+		this.serverPort = new JDataInfo("Server listening port: ", "not running", this.textFont, Color.black);
+
+		textFieldPort = new JTextField(5);
+		textFieldPort.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent ke) {
+				String value = textFieldPort.getText();
+				if (value.length() > 5 && ke.getKeyCode() != 8)
+					showMessage("You have exceeded the maximum length.");
+				else
+				// ke.getKeyCode() == 8 check if delete button was press
+				if (ke.getKeyChar() >= '0' && ke.getKeyChar() <= '9' || ke.getKeyCode() == 8)
+					textFieldPort.setEditable(true);
+				else {
+					System.out.println(value);
+					showMessage("Port must be an integer...");
+					if (value.length() == 0)
+						textFieldPort.setText("");
+					else
+						textFieldPort.setText(value);
+				}
+			}
+		});
 
 		textFieldRootDirectory = new JFilePicker("Web root directory", "...", "Select root directory", textFont,
 				JFileChooser.DIRECTORIES_ONLY);
@@ -95,63 +118,17 @@ public class MainScreen {
 		textFieldMaintenanceDirectory.setMode(JFilePicker.MODE_OPEN);
 
 		// SERVER INFO PANEL
-		serverInfo.setLayout(new GridBagLayout());
+		serverInfo.setLayout(new BoxLayout(serverInfo, BoxLayout.Y_AXIS));
 		this.setDefaultBorderToPanel(serverInfo, "Server info");
-		GridBagConstraints gbcinfo = new GridBagConstraints();
-
-		gbcinfo.fill = GridBagConstraints.HORIZONTAL;
-		gbcinfo.gridx = 0;
-		gbcinfo.gridy = 0;
-		gbcinfo.insets = new Insets(0, 5, 0, 0);
-		gbcinfo.weightx = 1;
-		serverInfo.add(this.createStaticLabel("Server status: ", this.textFont), gbcinfo);
-
-		gbcinfo.fill = GridBagConstraints.HORIZONTAL;
-		gbcinfo.gridwidth = 3;
-		gbcinfo.gridx = 1;
-		gbcinfo.gridy = 0;
-		gbcinfo.insets = new Insets(0, 0, 0, 15);
-		gbcinfo.weightx = 1;
-		serverInfo.add(serverStatus, gbcinfo);
-
-		gbcinfo.fill = GridBagConstraints.HORIZONTAL;
-		gbcinfo.gridwidth = 1;
-		gbcinfo.gridx = 0;
-		gbcinfo.gridy = 1;
-		gbcinfo.insets = new Insets(0, 5, 0, 0);
-		gbcinfo.weightx = 1;
-		serverInfo.add(this.createStaticLabel("Server address: ", this.textFont), gbcinfo);
-
-		gbcinfo.fill = GridBagConstraints.HORIZONTAL;
-		gbcinfo.gridwidth = 3;
-		gbcinfo.gridx = 1;
-		gbcinfo.gridy = 1;
-		gbcinfo.insets = new Insets(5, 0, 0, 15);
-		gbcinfo.weightx = 1;
-		serverInfo.add(serverAddress, gbcinfo);
-
-		gbcinfo.gridwidth = 1;
-		gbcinfo.gridx = 0;
-		gbcinfo.gridy = 2;
-		gbcinfo.insets = new Insets(0, 5, 0, 0);
-		gbcinfo.weightx = 1;
-		serverInfo.add(this.createStaticLabel("Server listening port: ", this.textFont), gbcinfo);
-
-		gbcinfo.fill = GridBagConstraints.HORIZONTAL;
-		gbcinfo.gridwidth = 3;
-		gbcinfo.gridx = 1;
-		gbcinfo.gridy = 2;
-		gbcinfo.weightx = 1;
-		gbcinfo.insets = new Insets(5, 0, 0, 15);
-		serverInfo.add(serverPort, gbcinfo);
+		serverInfo.add(Box.createRigidArea(new Dimension(0, 50)));
+		serverInfo.add(this.serverStatus);
+		serverInfo.add(this.serverAddress);
+		serverInfo.add(this.serverPort);
 
 		// SERVER CONTROL PANEL
-		serverControl.setLayout(new GridBagLayout());
+		serverControl.setLayout(new BoxLayout(serverControl, BoxLayout.PAGE_AXIS));
 		this.setDefaultBorderToPanel(serverControl, "Server control");
-		GridBagConstraints gbccontrol = new GridBagConstraints();
 
-		gbccontrol.gridx = 0;
-		gbccontrol.gridy = 0;
 		JButton buttonStartServer = new JButton("Start server", start);
 		buttonStartServer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -185,10 +162,11 @@ public class MainScreen {
 				}
 			}
 		});
-		serverControl.add(buttonStartServer, gbccontrol);
+		serverControl.add(Box.createRigidArea(new Dimension(0, 50)));
+		buttonStartServer.setAlignmentX(Component.CENTER_ALIGNMENT);
+		buttonStartServer.setAlignmentY(Component.CENTER_ALIGNMENT);
+		serverControl.add(buttonStartServer);
 
-		gbccontrol.gridx = 0;
-		gbccontrol.gridy = 1;
 		goMaintenance = new JCheckBox("Switch to maintenance mode");
 		goMaintenance.setEnabled(false);
 		goMaintenance.addActionListener(new ActionListener() {
@@ -210,10 +188,11 @@ public class MainScreen {
 				}
 			}
 		});
-		serverControl.add(goMaintenance, gbccontrol);
+		goMaintenance.setAlignmentX(Component.CENTER_ALIGNMENT);
+		goMaintenance.setAlignmentY(Component.CENTER_ALIGNMENT);
+		serverControl.add(goMaintenance);
 
 		// SERVER CONFIGURATION PANEL
-		serverControl.setLayout(new GridBagLayout());
 		this.setDefaultBorderToPanel(serverConfiguration, "Server configuration");
 		GridBagConstraints gbccofiguration = new GridBagConstraints();
 		gbccofiguration.fill = GridBagConstraints.HORIZONTAL;
@@ -221,7 +200,7 @@ public class MainScreen {
 		gbccofiguration.gridy = 0;
 		gbccofiguration.insets = new Insets(0, 5, 0, 0);
 		gbccofiguration.weightx = 1;
-		serverConfiguration.add(this.createStaticLabel("Server listening on port: ", this.textFont), gbccofiguration);
+		serverConfiguration.add(this.createStaticLabel("Server listening on port ", this.textFont), gbccofiguration);
 
 		gbccofiguration.fill = GridBagConstraints.HORIZONTAL;
 		gbccofiguration.gridwidth = 3;

@@ -3,6 +3,7 @@ package gui;
 import java.awt.EventQueue;
 import java.net.UnknownHostException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import gui.screens.MainScreen;
@@ -13,6 +14,7 @@ public class MyServerGui {
 
 	/**
 	 * Launch the application.
+	 * @wbp.parser.entryPoint
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -29,13 +31,16 @@ public class MyServerGui {
 
 	/**
 	 * Create the application.
+	 * @wbp.parser.entryPoint
 	 */
 	public MyServerGui() {
 		initialize();
+		setIcon();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @wbp.parser.entryPoint
 	 */
 	private void initialize() {
 		MainScreen window = new MainScreen();
@@ -46,7 +51,12 @@ public class MyServerGui {
 			e.printStackTrace();
 		}
 	}
-
+	
+	private void setIcon() {
+		ImageIcon icon = new ImageIcon("./assets/favicon.ico");
+		this.frame.setIconImage(icon.getImage());
+	}
+	
 	public void setVisible() {
 		this.frame.setVisible(true);
 	}
