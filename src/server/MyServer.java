@@ -42,8 +42,14 @@ public class MyServer extends Thread {
 			in = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
 			out = new PrintWriter(this.clientSocket.getOutputStream());
 			dataOut = new BufferedOutputStream(this.clientSocket.getOutputStream());
-			if (MyServer.state == ServerState.MAINTENANCE)
+			if (MyServer.state == ServerState.MAINTENANCE) {
+				Map<String, String> request = HttpParser.parseRequest(in, MyServer.supportedMethods);
+				String filePath = this.composePath(request.get("fileRequested"), true);
+				int fileLenght = (int) new File(filePath).length();
+				Handler responseHandler = new GetHandler();
+				this.handleRequest(responseHandler, out, dataOut, filePath, fileLenght);
 				System.out.println("Maintenance");
+			}
 			else {
 				Map<String, String> request = HttpParser.parseRequest(in, MyServer.supportedMethods);
 
@@ -92,6 +98,7 @@ public class MyServer extends Thread {
 	}
 
 	public static void setState(ServerState state) {
+		System.out.println("Server state changed to " + state);
 		MyServer.state = state;
 	}
 
@@ -125,7 +132,7 @@ public class MyServer extends Thread {
 	private String composePath(String file, Boolean isMaintenance) {
 		String basePath;
 		if (isMaintenance)
-			basePath = MyServer.config.getMaintenancePage();
+			return new File(MyServer.config.getMaintenancePage()).getPath();
 		else
 			basePath = MyServer.config.getRootDirectory();
 

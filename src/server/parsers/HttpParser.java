@@ -21,7 +21,8 @@ public class HttpParser {
 			String method = parse.nextToken().toUpperCase();
 			if(Arrays.asList(supportedMethods).contains(method)) {
 				response.put("method", method);
-				response.put("fileRequested", parse.nextToken().toLowerCase());
+				response.put("fileRequested", fromatFile(parse.nextToken().toLowerCase()));
+				System.out.println("File requested: " + response.get("fileRequested"));
 				return response;
 			}
 			else
@@ -31,5 +32,10 @@ public class HttpParser {
 			e.printStackTrace();
 			throw new InvalidRequestException("Error HTTP parser: " + e);
 		}
+	}
+	
+	private static String fromatFile(String file) {
+		String formatted = file.replace("%20", " ");
+		return formatted;
 	}
 }
