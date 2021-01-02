@@ -12,8 +12,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -38,6 +39,10 @@ import gui.helpers.JFilePicker;
 
 import server.MyServer;
 import server.ServerState;
+import server.configuration.Configuration;
+import server.configuration.PersistentConfiguration;
+import server.errors.InvalidConfigurationException;
+import server.errors.InvalidParameterException;
 
 public class MainScreen {
 
@@ -56,8 +61,11 @@ public class MainScreen {
 	private JFilePicker textFieldMaintenanceDirectory;
 	private InetAddress myIP;
 
-//	private Configuration config;
-//	@SuppressWarnings("unused")
+	private final String pathToStorageDesktop = System.getProperty("user.home") + File.separator + "Desktop"
+			+ File.separator + "MyJavaHttpServerStorage.json";
+	private PersistentConfiguration persistentConfig;
+	@SuppressWarnings("unused")
+	private Configuration config;
 //	private MyServer server;
 //	private ServerSocket serverSocket;
 
@@ -75,7 +83,9 @@ public class MainScreen {
 		this.frame = new CreateFrame();
 	}
 
-	public JFrame getMainFrame() throws UnknownHostException {
+	public JFrame getMainFrame() throws InvalidConfigurationException, IOException, InvalidParameterException {
+		this.persistentConfig = new PersistentConfiguration(pathToStorageDesktop);
+
 		JPanel serverInfo = new JPanel();
 		JPanel serverControl = new JPanel();
 		JPanel serverConfiguration = new JPanel();
@@ -110,11 +120,11 @@ public class MainScreen {
 		});
 
 		textFieldRootDirectory = new JFilePicker("Web root directory", "...", "Select root directory", textFont,
-				JFileChooser.DIRECTORIES_ONLY);
+				JFileChooser.DIRECTORIES_ONLY, this.persistentConfig, "root");
 		textFieldRootDirectory.setMode(JFilePicker.MODE_OPEN);
 
 		textFieldMaintenanceDirectory = new JFilePicker("Maintenance page ", "...", "Select maintenance page", textFont,
-				JFileChooser.FILES_ONLY);
+				JFileChooser.FILES_ONLY, this.persistentConfig, "maintenance");
 		textFieldMaintenanceDirectory.setMode(JFilePicker.MODE_OPEN);
 
 		// SERVER INFO PANEL
@@ -134,6 +144,21 @@ public class MainScreen {
 			public void actionPerformed(ActionEvent e) {
 				if (state == ServerState.STOPPED) {
 					if (checkConfiguration()) {
+						try {
+							persistentConfig.setKey("port", textFieldPort.getText());
+							config = new Configuration(textFieldRootDirectory.getSelectedFilePath(),
+									textFieldMaintenanceDirectory.getSelectedFilePath(),
+									Integer.parseInt(textFieldPort.getText()));
+						} catch (NumberFormatException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (InvalidConfigurationException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (InvalidParameterException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 						state = ServerState.RUNNING;
 						goMaintenance.setEnabled(true);
 						textFieldRootDirectory.disable();
@@ -253,6 +278,7 @@ public class MainScreen {
 		this.frame.setName("My Http Server");
 		this.frame.add(centralPanel);
 		this.setFrameTitle("Stopped");
+		this.setDefaultConfig();
 		return this.frame;
 	}
 
@@ -294,10 +320,21 @@ public class MainScreen {
 		JOptionPane.showMessageDialog(null, message);
 	}
 
-//	private void setDefaultConfig() throws InvalidConfigurationException {
-//		int port = 8081;
-//		String maintenance = "C:\\Users\\User\\Desktop\\Facultate\\Anul IV\\Semestrul I\\Software verification and validation\\Lab\\JavaHttpServer\\JavaHttpServer\\htdocs\\maintenance\\index.html";
-//		String root = "C:\\Users\\User\\Desktop\\Facultate\\Anul IV\\Semestrul I\\Software verification and validation\\Lab\\JavaHttpServer\\JavaHttpServer\\htdocs";
-//		this.config = new Configuration(root, maintenance, port);
-//	}
+	private void setDefaultConfig() throws InvalidConfigurationException, IOException, InvalidParameterException {
+		Integer port;
+		try {
+			port = Integer.parseInt(this.persistentConfig.getValue("port"));
+		} catch (Exception e) {
+			port = null;
+		}
+		String maintenance = this.persistentConfig.getValue("maintenance");
+		String root = this.persistentConfig.getValue("root");
+
+		if (port != null)
+			this.textFieldPort.setText(port.toString());
+		if (maintenance != null)
+			this.textFieldMaintenanceDirectory.setFilePath(maintenance);
+		if (root != null)
+			this.textFieldRootDirectory.setFilePath(root);
+	}
 }

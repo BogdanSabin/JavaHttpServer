@@ -44,7 +44,6 @@ public class PersistentConfiguration {
 		JSONObject obj = this.readFromStorage();
 		JSONObject config = (JSONObject) obj.get("config");
 		String value  = (String) config.get(key);
-		if(value == null) throw new InvalidParameterException("The key is not present in confg");
 		return value; 
 	}
 

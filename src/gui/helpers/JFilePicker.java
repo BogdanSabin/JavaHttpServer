@@ -12,6 +12,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import server.configuration.PersistentConfiguration;
+import server.errors.InvalidParameterException;
+
 @SuppressWarnings("serial")
 public class JFilePicker extends JPanel {
 	@SuppressWarnings("unused")
@@ -29,10 +32,15 @@ public class JFilePicker extends JPanel {
 	public static final int MODE_OPEN = 1;
 	public static final int MODE_SAVE = 2;
 
-	public JFilePicker(String textFieldLabel, String buttonLabel, String title, Font font, int mode) {
+	private PersistentConfiguration config;
+	private String key;
+
+	public JFilePicker(String textFieldLabel, String buttonLabel, String title, Font font, int mode,
+			PersistentConfiguration config, String key) {
 		this.textFieldLabel = textFieldLabel;
 		this.buttonLabel = buttonLabel;
-		
+		this.config = config;
+		this.key = key;
 		File workingDirectory = new File(System.getProperty("user.dir"));
 		fileChooser = new JFileChooser();
 		fileChooser.setCurrentDirectory(workingDirectory);
@@ -61,14 +69,23 @@ public class JFilePicker extends JPanel {
 	}
 
 	private void buttonActionPerformed(ActionEvent evt) {
-		if (mode == MODE_OPEN) {
-			if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-				textField.setText(fileChooser.getSelectedFile().getAbsolutePath());
-			}
-		} else if (mode == MODE_SAVE) {
-			if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-				textField.setText(fileChooser.getSelectedFile().getAbsolutePath());
-			}
+		if (mode == MODE_OPEN)
+			if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+				savePath();
+
+			else if (mode == MODE_SAVE)
+				if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION)
+					savePath();
+
+	}
+
+	private void savePath() {
+		try {
+			this.config.setKey(this.key, fileChooser.getSelectedFile().getAbsolutePath());
+			textField.setText(fileChooser.getSelectedFile().getAbsolutePath());
+		} catch (InvalidParameterException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error while saving into storage: " + e);
 		}
 	}
 

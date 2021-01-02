@@ -1,12 +1,14 @@
 package gui;
 
 import java.awt.EventQueue;
-import java.net.UnknownHostException;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import gui.screens.MainScreen;
+import server.errors.InvalidConfigurationException;
+import server.errors.InvalidParameterException;
 
 public class MyServerGui {
 
@@ -46,9 +48,9 @@ public class MyServerGui {
 		MainScreen window = new MainScreen();
 		try {
 			this.frame = window.getMainFrame();
-		} catch (UnknownHostException e) {
+		} catch (NumberFormatException | InvalidConfigurationException | IOException | InvalidParameterException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Error when apps started: " + e);
 		}
 	}
 	

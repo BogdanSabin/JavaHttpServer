@@ -116,12 +116,13 @@ public class PersistentConfigurationTest {
 		}
 	}
 
-	@Test(expected = InvalidParameterException.class)
+	@Test
 	public void testPersistentConfigurationGettingValueWhichIsNotPresent() throws InvalidParameterException {
 		PersistentConfiguration cfg;
 		try {
 			cfg = new PersistentConfiguration(this.pathToStorageDesktop);
-			cfg.getValue("valNotPresentInConfig");
+			String value = cfg.getValue("valNotPresentInConfig");
+			assertTrue("Should be equal", value == null);
 		} catch (IOException | InvalidConfigurationException e) {
 			// TODO Auto-generated catch block
 			fail("Should not fail with good parameters");

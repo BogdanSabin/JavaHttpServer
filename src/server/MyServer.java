@@ -72,7 +72,6 @@ public class MyServer extends Thread {
 					responseHandler = new NotFoundHandler();
 					this.handleRequest(responseHandler, out, dataOut, filePath, fileLenght);
 					break;
-
 				default:
 					break;
 				}
