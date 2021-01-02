@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.EventQueue;
+import java.net.UnknownHostException;
 
 import javax.swing.JFrame;
 
@@ -38,7 +39,12 @@ public class MyServerGui {
 	 */
 	private void initialize() {
 		MainScreen window = new MainScreen();
-		this.frame = window.getMainFrame();
+		try {
+			this.frame = window.getMainFrame();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void setVisible() {

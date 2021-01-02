@@ -7,15 +7,19 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.NumberFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
@@ -24,6 +28,7 @@ import javax.swing.border.TitledBorder;
 import gui.helpers.CreateFrame;
 import gui.helpers.JFilePicker;
 import gui.helpers.JTextFieldLimit;
+import server.MyServer;
 import server.ServerState;
 
 public class MainScreen {
@@ -41,6 +46,12 @@ public class MainScreen {
 	private JFormattedTextField textFieldPort;
 	private JFilePicker textFieldRootDirectory;
 	private JFilePicker textFieldMaintenanceDirectory;
+	private  InetAddress myIP;
+
+//	private Configuration config;
+//	@SuppressWarnings("unused")
+//	private MyServer server;
+//	private ServerSocket serverSocket;
 
 	/**
 	 * Create the application.
@@ -56,14 +67,15 @@ public class MainScreen {
 		this.frame = new CreateFrame();
 	}
 
-	public JFrame getMainFrame() {
+	public JFrame getMainFrame() throws UnknownHostException {
 		JPanel serverInfo = new JPanel();
 		JPanel serverControl = new JPanel();
 		JPanel serverConfiguration = new JPanel();
 		JPanel centralPanel = new JPanel();
 		ImageIcon start = createImageIcon("../assets/start.png");
 		ImageIcon stop = createImageIcon("../assets/stop.png");
-
+		myIP=InetAddress.getLocalHost();
+		
 		this.serverStatus = this.createStaticLabel("not running", this.textFont);
 		this.serverAddress = this.createStaticLabel("not running", this.textFont);
 		this.serverPort = this.createStaticLabel("not running", this.textFont);
@@ -73,14 +85,16 @@ public class MainScreen {
 		textFieldPort = new JFormattedTextField(integerFieldFormatter);
 		textFieldPort.setColumns(5);
 		textFieldPort.setDocument(new JTextFieldLimit(5));
-		
-		textFieldRootDirectory = new JFilePicker("Web root directory", "...");
-		textFieldRootDirectory.setMode(JFilePicker.MODE_SAVE);
-		
-		textFieldMaintenanceDirectory = new JFilePicker("Maintenance directory", "...");
-		textFieldMaintenanceDirectory.setMode(JFilePicker.MODE_SAVE);
 
-		//SERVER INFO PANEL
+		textFieldRootDirectory = new JFilePicker("Web root directory", "...", "Select root directory", textFont,
+				JFileChooser.DIRECTORIES_ONLY);
+		textFieldRootDirectory.setMode(JFilePicker.MODE_OPEN);
+
+		textFieldMaintenanceDirectory = new JFilePicker("Maintenance page ", "...", "Select maintenance page", textFont,
+				JFileChooser.FILES_ONLY);
+		textFieldMaintenanceDirectory.setMode(JFilePicker.MODE_OPEN);
+
+		// SERVER INFO PANEL
 		serverInfo.setLayout(new GridBagLayout());
 		this.setDefaultBorderToPanel(serverInfo, "Server info");
 		GridBagConstraints gbcinfo = new GridBagConstraints();
@@ -131,7 +145,7 @@ public class MainScreen {
 		gbcinfo.insets = new Insets(5, 0, 0, 15);
 		serverInfo.add(serverPort, gbcinfo);
 
-		//SERVER CONTROL PANEL
+		// SERVER CONTROL PANEL
 		serverControl.setLayout(new GridBagLayout());
 		this.setDefaultBorderToPanel(serverControl, "Server control");
 		GridBagConstraints gbccontrol = new GridBagConstraints();
@@ -142,16 +156,24 @@ public class MainScreen {
 		buttonStartServer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (state == ServerState.STOPPED) {
-					state = ServerState.RUNNING;
-					setFrameTitle("Running");
-					goMaintenance.setEnabled(true);
-					serverStatus.setText("running...");
-					serverAddress.setText("localhost");
-					serverPort.setText("8081");
-					buttonStartServer.setIcon(stop);
-					buttonStartServer.setText("Stop server");
+					if (checkConfiguration()) {
+						state = ServerState.RUNNING;
+						goMaintenance.setEnabled(true);
+						textFieldRootDirectory.disable();
+						textFieldPort.setEditable(false);
+						setFrameTitle("Running");
+						serverStatus.setText("running...");
+						serverAddress.setText(myIP.getHostAddress());
+						serverPort.setText(textFieldPort.getText());
+						buttonStartServer.setIcon(stop);
+						buttonStartServer.setText("Stop server");
+					} else
+						showMessage("Please check configurations...");
 				} else if (state == ServerState.RUNNING || state == ServerState.MAINTENANCE) {
 					state = ServerState.STOPPED;
+					textFieldRootDirectory.enable();
+					textFieldMaintenanceDirectory.enable();
+					textFieldPort.setEditable(true);
 					setFrameTitle("Stopped");
 					goMaintenance.setEnabled(false);
 					goMaintenance.setSelected(false);
@@ -172,10 +194,16 @@ public class MainScreen {
 		goMaintenance.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (goMaintenance.isSelected()) {
+					textFieldRootDirectory.enable();
+					textFieldMaintenanceDirectory.disable();
+					MyServer.setState(ServerState.MAINTENANCE);
 					setFrameTitle("Maintenance");
 					state = ServerState.MAINTENANCE;
 					serverStatus.setText("maintenance");
 				} else {
+					textFieldRootDirectory.disable();
+					textFieldMaintenanceDirectory.enable();
+					MyServer.setState(ServerState.RUNNING);
 					setFrameTitle("Running");
 					state = ServerState.RUNNING;
 					serverStatus.setText("running");
@@ -184,7 +212,7 @@ public class MainScreen {
 		});
 		serverControl.add(goMaintenance, gbccontrol);
 
-		//SERVER CONFIGURATION PANEL
+		// SERVER CONFIGURATION PANEL
 		serverControl.setLayout(new GridBagLayout());
 		this.setDefaultBorderToPanel(serverConfiguration, "Server configuration");
 		GridBagConstraints gbccofiguration = new GridBagConstraints();
@@ -203,8 +231,21 @@ public class MainScreen {
 		gbccofiguration.weightx = 1;
 		serverConfiguration.add(textFieldPort, gbccofiguration);
 
-		
-		//Central PANEL
+		gbccofiguration.fill = GridBagConstraints.HORIZONTAL;
+		gbccofiguration.gridx = 1;
+		gbccofiguration.gridy = 0;
+		gbccofiguration.insets = new Insets(0, 5, 0, 0);
+		gbccofiguration.weightx = 1;
+		serverConfiguration.add(textFieldRootDirectory);
+
+		gbccofiguration.fill = GridBagConstraints.HORIZONTAL;
+		gbccofiguration.gridx = 0;
+		gbccofiguration.gridy = 1;
+		gbccofiguration.insets = new Insets(0, 5, 0, 0);
+		gbccofiguration.weightx = 1;
+		serverConfiguration.add(textFieldMaintenanceDirectory);
+
+		// Central PANEL
 		centralPanel.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
@@ -255,4 +296,29 @@ public class MainScreen {
 	private void setFrameTitle(String state) {
 		this.frame.setTitle(this.TITLE + "-[" + state + "]");
 	}
+
+	private boolean checkConfiguration() {
+		if (textFieldPort.getText().equals(null) || textFieldPort.getText().equals(""))
+			return false;
+
+		if (textFieldRootDirectory.getSelectedFilePath().equals(null)
+				|| textFieldRootDirectory.getSelectedFilePath().equals(""))
+			return false;
+
+		if (textFieldMaintenanceDirectory.getSelectedFilePath().equals(null)
+				|| textFieldMaintenanceDirectory.getSelectedFilePath().equals(""))
+			return false;
+		return true;
+	}
+
+	private void showMessage(String message) {
+		JOptionPane.showMessageDialog(null, message);
+	}
+
+//	private void setDefaultConfig() throws InvalidConfigurationException {
+//		int port = 8081;
+//		String maintenance = "C:\\Users\\User\\Desktop\\Facultate\\Anul IV\\Semestrul I\\Software verification and validation\\Lab\\JavaHttpServer\\JavaHttpServer\\htdocs\\maintenance\\index.html";
+//		String root = "C:\\Users\\User\\Desktop\\Facultate\\Anul IV\\Semestrul I\\Software verification and validation\\Lab\\JavaHttpServer\\JavaHttpServer\\htdocs";
+//		this.config = new Configuration(root, maintenance, port);
+//	}
 }
