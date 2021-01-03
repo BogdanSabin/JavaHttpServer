@@ -1,6 +1,5 @@
 package gui.helpers;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -13,7 +12,7 @@ public class JDataInfo extends JPanel{
 	private JLabel staticLabel;
 	private JLabel dynamicLabel;
 	
-	public JDataInfo(String textLabelStatic, String textLabelDynamic, Font font, Color c) {
+	public JDataInfo(String textLabelStatic, String textLabelDynamic, Font font) {
 		 staticLabel = new JLabel(textLabelStatic);
 		 staticLabel.setFont(font);
 		 

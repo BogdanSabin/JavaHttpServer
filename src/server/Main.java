@@ -8,6 +8,7 @@ import server.errors.InvalidConfigurationException;
 
 public class Main {
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		if (args.length != 3) {
 			System.out.print("Usage java Main rootDirectoryPath maintenancePagePath portNumber");
@@ -17,13 +18,15 @@ public class Main {
 			String rootDirectoryPath = args[0];
 			String maintenancePagePath = args[1];
 			int port = Integer.parseInt(args[2]);
+			MyServer server;
 			try {
 				serverSocket = new ServerSocket(port);
 				System.out.println("Server started...");
 				Configuration config = new Configuration(rootDirectoryPath, maintenancePagePath, port);
 				while (true) {
 					System.out.println("Waiting for connections...");
-					new MyServer(serverSocket.accept(), config);
+					MyServer.setState(ServerState.RUNNING);
+					server = new MyServer(serverSocket.accept(), config);
 				}
 
 			} catch (IOException | InvalidConfigurationException e) {

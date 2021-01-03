@@ -36,8 +36,7 @@ import javax.swing.border.TitledBorder;
 import gui.helpers.CreateFrame;
 import gui.helpers.JDataInfo;
 import gui.helpers.JFilePicker;
-
-import server.MyServer;
+import gui.helpers.ServerRunner;
 import server.ServerState;
 import server.configuration.Configuration;
 import server.configuration.PersistentConfiguration;
@@ -64,10 +63,8 @@ public class MainScreen {
 	private final String pathToStorageDesktop = System.getProperty("user.home") + File.separator + "Desktop"
 			+ File.separator + "MyJavaHttpServerStorage.json";
 	private PersistentConfiguration persistentConfig;
-	@SuppressWarnings("unused")
 	private Configuration config;
-//	private MyServer server;
-//	private ServerSocket serverSocket;
+	private ServerRunner serverRunner;
 
 	/**
 	 * Create the application.
@@ -94,9 +91,9 @@ public class MainScreen {
 		ImageIcon stop = createImageIcon("../assets/stop.png");
 		myIP = InetAddress.getLocalHost();
 
-		this.serverStatus = new JDataInfo("Server status: ", "not running", this.textFont, Color.RED);
-		this.serverAddress = new JDataInfo("Server address: ", "not running", this.textFont, Color.blue);
-		this.serverPort = new JDataInfo("Server listening port: ", "not running", this.textFont, Color.black);
+		this.serverStatus = new JDataInfo("Server status: ", "not running", this.textFont);
+		this.serverAddress = new JDataInfo("Server address: ", "not running", this.textFont);
+		this.serverPort = new JDataInfo("Server listening port: ", "not running", this.textFont);
 
 		textFieldPort = new JTextField(5);
 		textFieldPort.addKeyListener(new KeyAdapter() {
@@ -149,15 +146,12 @@ public class MainScreen {
 							config = new Configuration(textFieldRootDirectory.getSelectedFilePath(),
 									textFieldMaintenanceDirectory.getSelectedFilePath(),
 									Integer.parseInt(textFieldPort.getText()));
-						} catch (NumberFormatException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						} catch (InvalidConfigurationException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						} catch (InvalidParameterException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
+
+							serverRunner = new ServerRunner(config);
+							serverRunner.start();
+						} catch (NumberFormatException | InvalidConfigurationException
+								| InvalidParameterException err) {
+							System.out.println("Error creating config: " + err);
 						}
 						state = ServerState.RUNNING;
 						goMaintenance.setEnabled(true);
@@ -172,6 +166,9 @@ public class MainScreen {
 					} else
 						showMessage("Please check configurations...");
 				} else if (state == ServerState.RUNNING || state == ServerState.MAINTENANCE) {
+					serverRunner.stop();
+					// if maintenance was selected and server stopped
+					serverRunner.goMaintenance(false);
 					state = ServerState.STOPPED;
 					textFieldRootDirectory.enable();
 					textFieldMaintenanceDirectory.enable();
@@ -197,16 +194,28 @@ public class MainScreen {
 		goMaintenance.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (goMaintenance.isSelected()) {
+					serverRunner.goMaintenance(true);
+					try {
+						config.setMaintenancePage(textFieldMaintenanceDirectory.getSelectedFilePath());
+						serverRunner.changeConfig(config);
+					} catch (InvalidConfigurationException e1) {
+						System.out.println("Error changinh config: " + e1);
+					}
 					textFieldRootDirectory.enable();
 					textFieldMaintenanceDirectory.disable();
-					MyServer.setState(ServerState.MAINTENANCE);
 					setFrameTitle("Maintenance");
 					state = ServerState.MAINTENANCE;
 					serverStatus.setText("maintenance");
 				} else {
+					serverRunner.goMaintenance(false);
+					try {
+						config.setRootDirectory(textFieldRootDirectory.getSelectedFilePath());
+						serverRunner.changeConfig(config);
+					} catch (InvalidConfigurationException e1) {
+						System.out.println("Error changinh config: " + e1);
+					}
 					textFieldRootDirectory.disable();
 					textFieldMaintenanceDirectory.enable();
-					MyServer.setState(ServerState.RUNNING);
 					setFrameTitle("Running");
 					state = ServerState.RUNNING;
 					serverStatus.setText("running");

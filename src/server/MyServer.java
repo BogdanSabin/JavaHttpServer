@@ -29,7 +29,6 @@ public class MyServer extends Thread {
 			throw new InvalidConfigurationException("Server has not been configured!");
 		this.clientSocket = socket;
 		MyServer.setConfig(config);
-		MyServer.state = ServerState.RUNNING;
 		this.start();
 	}
 

@@ -107,10 +107,13 @@ public class MyServerTest {
 	}
 
 	@Test(timeout = 5000)
+	@SuppressWarnings("unused")
 	public void testMyServerStateIsRunningAfterInstanciation() {
 		try {
+			MyServer server;
+			MyServer.setState(ServerState.RUNNING);
 			this.makeServerRequest();
-			new MyServer(this.serverSocket.accept(), this.config);
+			server = new MyServer(this.serverSocket.accept(), this.config);
 			assertTrue("Should be equal", MyServer.getServerState() == ServerState.RUNNING);
 		} catch (InvalidConfigurationException | IOException e) {
 			fail("It should not fail with correct parameters");
