@@ -26,7 +26,59 @@ public class HttpParserTest {
 			e.printStackTrace();
 		}
 	}
-
+	
+	@Test
+	public void testHttpParserWithGetRequestForFileWithSpace1() {
+		try {
+			Map<String, String> response = this.parseRequest(HttpRequestProvider.GET_REQUEST_fil1);
+			assertTrue("Should be equal", response.get("method").equals("GET"));
+			assertTrue("Should be equal", response.get("fileRequested").equals(HttpRequestProvider.file_with_space1_decoded));
+		} catch (InvalidRequestException e) {
+			fail("Should not fail with this request");
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testHttpParserWithGetRequestForFileWithSpace2() {
+		try {
+			Map<String, String> response = this.parseRequest(HttpRequestProvider.GET_REQUEST_file2);
+			assertTrue("Should be equal", response.get("method").equals("GET"));
+			assertTrue("Should be equal", response.get("fileRequested").equals(HttpRequestProvider.file_with_space2_decoded));
+		} catch (InvalidRequestException e) {
+			fail("Should not fail with this request");
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testHttpParserWithGetRequestForFileWithSpace3() {
+		try {
+			Map<String, String> response = this.parseRequest(HttpRequestProvider.GET_REQUEST_file3);
+			assertTrue("Should be equal", response.get("method").equals("GET"));
+			assertTrue("Should be equal", response.get("fileRequested").equals(HttpRequestProvider.file_with_space3_decoded));
+		} catch (InvalidRequestException e) {
+			fail("Should not fail with this request");
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testHttpParserWithGetRequestForFileWithSpace4() {
+		try {
+			Map<String, String> response = this.parseRequest(HttpRequestProvider.GET_REQUEST_file4);
+			assertTrue("Should be equal", response.get("method").equals("GET"));
+			assertTrue("Should be equal", response.get("fileRequested").equals(HttpRequestProvider.file_with_space4_decoded));
+		} catch (InvalidRequestException e) {
+			fail("Should not fail with this request");
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	@Test(expected = InvalidRequestException.class)
 	public void testHttpParserWithInvalidRequest() throws InvalidRequestException {
 		Map<String, String> response = this.parseRequest(HttpRequestProvider.INVALID_REQUEST);
