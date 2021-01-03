@@ -16,3 +16,7 @@ Solution: Add null check
 4.
 Bug: Write to static field server.MyServer.config from instance method new server.MyServer(Socket, Configuration)
 Solution: Use the static setter method for config
+
+5.
+Bug: Call to equals(null) in gui.screens.MainScreen.checkConfiguration()
+Solution use == for null checks 

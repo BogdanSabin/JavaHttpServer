@@ -312,14 +312,14 @@ public class MainScreen {
 	}
 
 	private boolean checkConfiguration() {
-		if (textFieldPort.getText().equals(null) || textFieldPort.getText().equals(""))
+		if (textFieldPort.getText() == null || textFieldPort.getText().equals(""))
 			return false;
 
-		if (textFieldRootDirectory.getSelectedFilePath().equals(null)
+		if (textFieldRootDirectory.getSelectedFilePath() == null
 				|| textFieldRootDirectory.getSelectedFilePath().equals(""))
 			return false;
 
-		if (textFieldMaintenanceDirectory.getSelectedFilePath().equals(null)
+		if (textFieldMaintenanceDirectory.getSelectedFilePath() == null
 				|| textFieldMaintenanceDirectory.getSelectedFilePath().equals(""))
 			return false;
 		return true;
