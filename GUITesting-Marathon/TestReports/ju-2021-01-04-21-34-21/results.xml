@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<test projectname='GUITesting-MyJavaHttpServer' reportdir='ju-2021-01-04-21-34-21' >
+<testsuite name="AllTests" >
+  <testcase name="MaintenanceMode" status="0" time="10.95" >
+  </testcase>
+  <testcase name="MaintenanceToStop" status="0" time="9.139" >
+  </testcase>
+  <testcase name="PersistencyTest" status="0" time="9.763" >
+  </testcase>
+  <testcase name="RunningMode" status="0" time="8.526" >
+  </testcase>
+  <testcase name="StartToStop" status="0" time="8.804" >
+  </testcase>
+  <testcase name="StoppedMode" status="0" time="8.354" >
+  </testcase>
+  <testcase name="TestFileChoshers" status="0" time="9.183" >
+  </testcase>
+  <testcase name="TestPortInsert" status="0" time="11.162" >
+  </testcase>
+</testsuite>
+</test>

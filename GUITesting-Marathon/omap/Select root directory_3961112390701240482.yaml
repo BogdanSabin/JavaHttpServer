@@ -1,0 +1,14 @@
+- !!net.sourceforge.marathon.objectmap.OMapComponent
+    componentRecognitionProperties:
+    - {method: equals, name: type, value: JFileChooser}
+    - {method: equals, name: indexOfType, value: '0'}
+    generalProperties:
+    - {name: component.class.simpleName, value: JFileChooser}
+    - {name: type, value: JFileChooser}
+    - {name: indexOfType, value: '0'}
+    - {name: enabled, value: 'true'}
+    - {name: instanceOf, value: javax.swing.JFileChooser}
+    - {name: component.class.name, value: javax.swing.JFileChooser}
+    - {name: size, value: '[width=500,height=326]'}
+    - {name: position, value: '[x=1858,y=288]'}
+    name: JFileChooser_0

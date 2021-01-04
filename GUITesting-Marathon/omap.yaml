@@ -1,0 +1,52 @@
+- !!net.sourceforge.marathon.objectmap.OMapContainer
+    containerGeneralProperties:
+    - {name: component.class.simpleName, value: CreateFrame}
+    - {name: title, value: 'My Java Http Server-[Stopped]'}
+    - {name: enabled, value: 'true'}
+    - {name: instanceOf, value: javax.swing.JFrame}
+    - {name: accessibleContext.accessibleName, value: 'My Java Http Server-[Stopped]'}
+    - {name: size, value: '[width=600,height=390]'}
+    - {name: oMapClassName, value: gui.helpers.CreateFrame}
+    - {name: name, value: My Http Server}
+    - {name: position, value: '[x=191,y=159]'}
+    - {name: component.class.name, value: gui.helpers.CreateFrame}
+    - {name: oMapClassSimpleName, value: CreateFrame}
+    containerRecognitionProperties:
+    - {method: equals, name: oMapClassName, value: gui.helpers.CreateFrame}
+    containerTitles: ['My Java Http Server-[Stopped]', 'My Java Http Server-[Running]',
+        'My Java Http Server-[Maintenance]']
+    fileName: My Java Http Server-[Stopped]_542632371068721103.yaml
+- !!net.sourceforge.marathon.objectmap.OMapContainer
+    containerGeneralProperties:
+    - {name: component.class.simpleName, value: JDialog}
+    - {name: title, value: Message}
+    - {name: enabled, value: 'true'}
+    - {name: instanceOf, value: javax.swing.JDialog}
+    - {name: accessibleContext.accessibleName, value: Message}
+    - {name: size, value: '[width=278,height=129]'}
+    - {name: oMapClassName, value: javax.swing.JOptionPane#Dialog_1_-1}
+    - {name: name, value: dialog0}
+    - {name: position, value: '[x=544,y=300]'}
+    - {name: component.class.name, value: javax.swing.JDialog}
+    - {name: oMapClassSimpleName, value: JOptionPane#Dialog}
+    containerRecognitionProperties:
+    - {method: equals, name: oMapClassName, value: javax.swing.JOptionPane#Dialog_1_-1}
+    containerTitles: [Message]
+    fileName: Message_8683302526444278375.yaml
+- !!net.sourceforge.marathon.objectmap.OMapContainer
+    containerGeneralProperties:
+    - {name: component.class.simpleName, value: JDialog}
+    - {name: title, value: Select root directory}
+    - {name: enabled, value: 'true'}
+    - {name: instanceOf, value: javax.swing.JDialog}
+    - {name: accessibleContext.accessibleName, value: Select root directory}
+    - {name: size, value: '[width=516,height=365]'}
+    - {name: oMapClassName, value: javax.swing.JFileChooser#Dialog}
+    - {name: name, value: dialog0}
+    - {name: position, value: '[x=1850,y=257]'}
+    - {name: component.class.name, value: javax.swing.JDialog}
+    - {name: oMapClassSimpleName, value: JFileChooser#Dialog}
+    containerRecognitionProperties:
+    - {method: equals, name: oMapClassName, value: javax.swing.JFileChooser#Dialog}
+    containerTitles: [Select root directory, Select maintenance page]
+    fileName: Select root directory_3961112390701240482.yaml

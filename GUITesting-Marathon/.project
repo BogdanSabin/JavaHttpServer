@@ -1,0 +1,27 @@
+#Marathon Project File
+#Mon Jan 04 21:00:38 EET 2021
+marathon.checklist.dir=%marathon.project.dir%/Checklists
+marathon.test.dir=%marathon.project.dir%/TestCases
+marathon.application.launchtime=60000
+marathon.application.pythonpath=
+marathon.runtime.assertions=Enabled\:\:;Background\:\:;Foreground\:\:;RowCount\:javax.swing.JTable\:;ColumnCount\:javax.swing.JTable\:;ItemCount\:javax.swing.JComboBox\:;Model.Size\:javax.swing.JList\:ItemCount;Font\:\:;Font.Family\:\:FontFamily;Border\:\:;Border.LineColor\:\:BorderLineColor
+marathon.component.ignore.components=javax.swing.JMenuBar(ignorechild\:false);javax.swing.JToolBar(ignorechild\:false);javax.swing.JPanel(ignorechild\:false);javax.swing.JViewport(ignorechild\:false);javax.swing.JScrollBar(ignorechild\:true)
+marathon.data.dir=%marathon.project.dir%/TestData
+marathon.application.classpath=%marathon.project.dir%/../../../../../../../../MyJavaHttpServer.jar
+marathon.application.arguments=
+marathon.application.working.dir=
+marathon.properties.java.util.logging.config.file=%marathon.project.dir%/logging.properties
+marathon.project.launcher.model=net.sourceforge.marathon.runtime.RuntimeLauncherModel
+marathon.capture.dir=%marathon.project.dir%\\Modules;
+marathon.application.mainclass=gui.MyServerGui
+marathon.application.pythonhome=
+marathon.recorder.namingstrategy=net.sourceforge.marathon.objectmap.ObjectMapNamingStrategy
+marathon.component.resolvers=
+marathon.fixture.dir=%marathon.project.dir%/Fixtures
+marathon.project.description=
+marathon.application.toolkit_menumask=false
+marathon.application.vm.command=
+marathon.project.name=GUITesting-MyJavaHttpServer
+marathon.suite.dir=%marathon.project.dir%/TestSuites
+marathon.project.script.model=net.sourceforge.marathon.python.PythonScriptModel
+marathon.application.vm.arguments=

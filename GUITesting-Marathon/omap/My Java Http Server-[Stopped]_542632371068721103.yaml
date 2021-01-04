@@ -1,0 +1,242 @@
+- !!net.sourceforge.marathon.objectmap.OMapComponent
+    componentRecognitionProperties:
+    - {method: equals, name: precedingLabel, value: Server status}
+    - {method: equals, name: type, value: JLabel}
+    generalProperties:
+    - {name: fieldName, value: dynamicLabel}
+    - {name: labelText, value: 'lbl:not running'}
+    - {name: component.class.simpleName, value: JLabel}
+    - {name: type, value: JLabel}
+    - {name: enabled, value: 'true'}
+    - {name: indexOfType, value: '1'}
+    - {name: instanceOf, value: javax.swing.JLabel}
+    - {name: component.class.name, value: javax.swing.JLabel}
+    - {name: cText, value: not running}
+    - {name: accessibleContext.accessibleName, value: not running}
+    - {name: size, value: '[width=73,height=15]'}
+    - {name: precedingLabel, value: Server status}
+    - {name: accessibleName, value: not running}
+    - {name: position, value: '[x=320,y=263]'}
+    name: lbl:not running
+- !!net.sourceforge.marathon.objectmap.OMapComponent
+    componentRecognitionProperties:
+    - {method: equals, name: actionCommand, value: Start server}
+    - {method: equals, name: type, value: JButton}
+    generalProperties:
+    - {name: component.class.simpleName, value: JButton}
+    - {name: type, value: JButton}
+    - {name: enabled, value: 'true'}
+    - {name: indexOfType, value: '0'}
+    - {name: instanceOf, value: javax.swing.JButton}
+    - {name: actionCommand, value: Start server}
+    - {name: component.class.name, value: javax.swing.JButton}
+    - {name: buttonText, value: Start server}
+    - {name: cText, value: Start server}
+    - {name: accessibleContext.accessibleName, value: Start server}
+    - {name: size, value: '[width=102,height=26]'}
+    - {name: accessibleName, value: Start server}
+    - {name: position, value: '[x=589,y=258]'}
+    name: Start server
+- !!net.sourceforge.marathon.objectmap.OMapComponent
+    componentRecognitionProperties:
+    - {method: equals, name: precedingLabel, value: Server address}
+    - {method: equals, name: type, value: JLabel}
+    generalProperties:
+    - {name: fieldName, value: dynamicLabel}
+    - {name: labelText, value: 'lbl:not running'}
+    - {name: component.class.simpleName, value: JLabel}
+    - {name: type, value: JLabel}
+    - {name: enabled, value: 'true'}
+    - {name: indexOfType, value: '3'}
+    - {name: instanceOf, value: javax.swing.JLabel}
+    - {name: component.class.name, value: javax.swing.JLabel}
+    - {name: cText, value: not running}
+    - {name: accessibleContext.accessibleName, value: not running}
+    - {name: size, value: '[width=73,height=15]'}
+    - {name: precedingLabel, value: Server address}
+    - {name: accessibleName, value: not running}
+    - {name: position, value: '[x=331,y=283]'}
+    name: not running
+- !!net.sourceforge.marathon.objectmap.OMapComponent
+    componentRecognitionProperties:
+    - {method: equals, name: precedingLabel, value: Server listening port}
+    - {method: equals, name: type, value: JLabel}
+    generalProperties:
+    - {name: fieldName, value: dynamicLabel}
+    - {name: labelText, value: 'lbl:not running'}
+    - {name: component.class.simpleName, value: JLabel}
+    - {name: type, value: JLabel}
+    - {name: enabled, value: 'true'}
+    - {name: indexOfType, value: '5'}
+    - {name: instanceOf, value: javax.swing.JLabel}
+    - {name: component.class.name, value: javax.swing.JLabel}
+    - {name: cText, value: not running}
+    - {name: accessibleContext.accessibleName, value: not running}
+    - {name: size, value: '[width=73,height=15]'}
+    - {name: precedingLabel, value: Server listening port}
+    - {name: accessibleName, value: not running}
+    - {name: position, value: '[x=363,y=303]'}
+    name: Server listening port
+- !!net.sourceforge.marathon.objectmap.OMapComponent
+    componentRecognitionProperties:
+    - {method: equals, name: actionCommand, value: Switch to maintenance mode}
+    - {method: equals, name: type, value: JCheckBox}
+    generalProperties:
+    - {name: component.class.simpleName, value: JCheckBox}
+    - {name: type, value: JCheckBox}
+    - {name: enabled, value: 'false'}
+    - {name: indexOfType, value: '0'}
+    - {name: instanceOf, value: javax.swing.JCheckBox}
+    - {name: actionCommand, value: Switch to maintenance mode}
+    - {name: component.class.name, value: javax.swing.JCheckBox}
+    - {name: buttonText, value: Switch to maintenance mode}
+    - {name: cText, value: Switch to maintenance mode}
+    - {name: accessibleContext.accessibleName, value: Switch to maintenance mode}
+    - {name: size, value: '[width=190,height=24]'}
+    - {name: precedingLabel, value: not running}
+    - {name: accessibleName, value: Switch to maintenance mode}
+    - {name: position, value: '[x=545,y=284]'}
+    name: Switch to maintenance mode
+- !!net.sourceforge.marathon.objectmap.OMapComponent
+    componentRecognitionProperties:
+    - {method: equals, name: precedingLabel, value: Server listening on port}
+    - {method: equals, name: type, value: JTextField}
+    generalProperties:
+    - {name: component.class.simpleName, value: JTextField}
+    - {name: type, value: JTextField}
+    - {name: enabled, value: 'true'}
+    - {name: indexOfType, value: '0'}
+    - {name: instanceOf, value: javax.swing.JTextField}
+    - {name: component.class.name, value: javax.swing.JTextField}
+    - {name: cText, value: '8081'}
+    - {name: size, value: '[width=59,height=20]'}
+    - {name: precedingLabel, value: Server listening on port}
+    - {name: position, value: '[x=539,y=429]'}
+    name: Server listening on port
+- !!net.sourceforge.marathon.objectmap.OMapComponent
+    componentRecognitionProperties:
+    - {method: equals, name: precedingLabel, value: Web root directory}
+    - {method: equals, name: type, value: JTextField}
+    generalProperties:
+    - {name: fieldName, value: textField}
+    - {name: component.class.simpleName, value: JTextField}
+    - {name: type, value: JTextField}
+    - {name: enabled, value: 'true'}
+    - {name: indexOfType, value: '1'}
+    - {name: instanceOf, value: javax.swing.JTextField}
+    - {name: component.class.name, value: javax.swing.JTextField}
+    - {name: cText, value: 'C:\Users\User\Desktop\Facultate\Anul IV\Semestrul I\Software
+            verification and validation\Lab\JavaHttpServer\JavaHttpServer\htdocs'}
+    - {name: size, value: '[width=334,height=20]'}
+    - {name: precedingLabel, value: Web root directory}
+    - {name: position, value: '[x=361,y=462]'}
+    name: Web root directory
+- !!net.sourceforge.marathon.objectmap.OMapComponent
+    componentRecognitionProperties:
+    - {method: equals, name: precedingLabel, value: Maintenance page}
+    - {method: equals, name: type, value: JTextField}
+    generalProperties:
+    - {name: fieldName, value: textField}
+    - {name: component.class.simpleName, value: JTextField}
+    - {name: type, value: JTextField}
+    - {name: enabled, value: 'true'}
+    - {name: indexOfType, value: '2'}
+    - {name: instanceOf, value: javax.swing.JTextField}
+    - {name: component.class.name, value: javax.swing.JTextField}
+    - {name: cText, value: 'C:\Users\User\Desktop\Facultate\Anul IV\Semestrul I\Software
+            verification and validation\Lab\JavaHttpServer\JavaHttpServer\htdocs\maintenance\index.html'}
+    - {name: size, value: '[width=334,height=20]'}
+    - {name: precedingLabel, value: Maintenance page}
+    - {name: position, value: '[x=362,y=503]'}
+    name: Maintenance page
+- !!net.sourceforge.marathon.objectmap.OMapComponent
+    componentRecognitionProperties:
+    - {method: equals, name: type, value: JButton}
+    - {method: equals, name: indexOfType, value: '1'}
+    generalProperties:
+    - {name: fieldName, value: button}
+    - {name: component.class.simpleName, value: JButton}
+    - {name: type, value: JButton}
+    - {name: indexOfType, value: '1'}
+    - {name: enabled, value: 'true'}
+    - {name: instanceOf, value: javax.swing.JButton}
+    - {name: actionCommand, value: '...'}
+    - {name: component.class.name, value: javax.swing.JButton}
+    - {name: buttonText, value: '...'}
+    - {name: cText, value: '...'}
+    - {name: accessibleContext.accessibleName, value: '...'}
+    - {name: size, value: '[width=43,height=26]'}
+    - {name: accessibleName, value: '...'}
+    - {name: position, value: '[x=700,y=459]'}
+    name: '...'
+- !!net.sourceforge.marathon.objectmap.OMapComponent
+    componentRecognitionProperties:
+    - {method: equals, name: type, value: JButton}
+    - {method: equals, name: indexOfType, value: '2'}
+    generalProperties:
+    - {name: fieldName, value: button}
+    - {name: component.class.simpleName, value: JButton}
+    - {name: type, value: JButton}
+    - {name: indexOfType, value: '2'}
+    - {name: enabled, value: 'true'}
+    - {name: instanceOf, value: javax.swing.JButton}
+    - {name: actionCommand, value: '...'}
+    - {name: component.class.name, value: javax.swing.JButton}
+    - {name: buttonText, value: '...'}
+    - {name: cText, value: '...'}
+    - {name: accessibleContext.accessibleName, value: '...'}
+    - {name: size, value: '[width=43,height=26]'}
+    - {name: accessibleName, value: '...'}
+    - {name: position, value: '[x=701,y=500]'}
+    name: button
+- !!net.sourceforge.marathon.objectmap.OMapComponent
+    componentRecognitionProperties:
+    - {method: equals, name: type, value: gui.helpers.JDataInfo}
+    - {method: equals, name: indexOfType, value: '1'}
+    generalProperties:
+    - {name: component.class.simpleName, value: JDataInfo}
+    - {name: type, value: gui.helpers.JDataInfo}
+    - {name: indexOfType, value: '1'}
+    - {name: enabled, value: 'true'}
+    - {name: instanceOf, value: javax.swing.JPanel}
+    - {name: component.class.name, value: gui.helpers.JDataInfo}
+    - {name: size, value: '[width=250,height=20]'}
+    - {name: position, value: '[x=1937,y=320]'}
+    name: gui.helpers.JDataInfo_1
+- !!net.sourceforge.marathon.objectmap.OMapComponent
+    componentRecognitionProperties:
+    - {method: equals, name: accessibleName, value: 'Server listening on port '}
+    - {method: equals, name: type, value: JLabel}
+    generalProperties:
+    - {name: labelText, value: 'lbl:Server listening on port '}
+    - {name: component.class.simpleName, value: JLabel}
+    - {name: type, value: JLabel}
+    - {name: enabled, value: 'true'}
+    - {name: indexOfType, value: '6'}
+    - {name: instanceOf, value: javax.swing.JLabel}
+    - {name: component.class.name, value: javax.swing.JLabel}
+    - {name: cText, value: 'Server listening on port '}
+    - {name: accessibleContext.accessibleName, value: 'Server listening on port '}
+    - {name: size, value: '[width=152,height=16]'}
+    - {name: accessibleName, value: 'Server listening on port '}
+    - {name: position, value: '[x=2077,y=458]'}
+    name: 'lbl:Server listening on port '
+- !!net.sourceforge.marathon.objectmap.OMapComponent
+    componentRecognitionProperties:
+    - {method: equals, name: actionCommand, value: Stop server}
+    - {method: equals, name: type, value: JButton}
+    generalProperties:
+    - {name: component.class.simpleName, value: JButton}
+    - {name: type, value: JButton}
+    - {name: enabled, value: 'true'}
+    - {name: indexOfType, value: '0'}
+    - {name: instanceOf, value: javax.swing.JButton}
+    - {name: actionCommand, value: Stop server}
+    - {name: component.class.name, value: javax.swing.JButton}
+    - {name: buttonText, value: Stop server}
+    - {name: cText, value: Stop server}
+    - {name: accessibleContext.accessibleName, value: Stop server}
+    - {name: size, value: '[width=100,height=26]'}
+    - {name: accessibleName, value: Stop server}
+    - {name: position, value: '[x=2228,y=270]'}
+    name: Stop server
